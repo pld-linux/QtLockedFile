@@ -11,7 +11,9 @@ Source1:	qtlockedfile.prf
 Patch0:		qtlockedfile-dont-build-example.patch
 # Remove unnecessary linkage to libQtGui
 Patch1:		qtlockedfile-dont-link-qtgui.patch
-BuildRequires:	qt4-build
+BuildRequires:	QtCore-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	qt4-qmake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_qt4_datadir	%{_datadir}/qt4
