@@ -134,6 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
+%post	-n Qt5LockedFile -p /sbin/ldconfig
+%postun	-n Qt5LockedFile -p /sbin/ldconfig
+
 %if %{with qt4}
 %files
 %defattr(644,root,root,755)
