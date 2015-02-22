@@ -32,8 +32,8 @@ BuildRequires:	qt5-qmake
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_qt4_datadir	%{_datadir}/qt4
-%define		_qt5_datadir	%{_datadir}/qt5
+%define		qt4dir	%{_datadir}/qt4
+%define		qt5dir	%{_libdir}/qt5
 
 %description
 This class extends the QFile class with inter-process file locking
@@ -110,22 +110,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with qt4}
 cd build-qt4
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_qt4_datadir}/mkspecs/features}
+install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/qt4/QtSolutions,%{qt4dir}/mkspecs/features}
 cp -a lib/* $RPM_BUILD_ROOT%{_libdir}
 rm $RPM_BUILD_ROOT%{_libdir}/lib*-%{version}.so.1.0
-install -d $RPM_BUILD_ROOT%{_includedir}/QtSolutions
-cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/QtSolutions
-cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_qt4_datadir}/mkspecs/features
+cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/qt4/QtSolutions
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{qt4dir}/mkspecs/features
 cd ..
 %endif
 
 %if %{with qt5}
 cd build-qt5
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/qt5/QtSolutions,%{_qt5_datadir}/mkspecs/features}
+install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/qt5/QtSolutions,%{qt5dir}/mkspecs/features}
 cp -a lib/* $RPM_BUILD_ROOT%{_libdir}
 rm $RPM_BUILD_ROOT%{_libdir}/lib*-%{version}.so.1.0
 cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/qt5/QtSolutions
-cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_qt5_datadir}/mkspecs/features
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{qt5dir}/mkspecs/features
 cd ..
 %endif
 
@@ -139,7 +138,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README.TXT
-#%doc LGPL_EXCEPTION.txt LICENSE.*
 %attr(755,root,root) %{_libdir}/libQtSolutions_LockedFile-%{version}.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libQtSolutions_LockedFile-%{version}.so.1
 
@@ -147,11 +145,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc doc example
 %{_libdir}/libQtSolutions_LockedFile-%{version}.so
-# XXX shared dir with QtSingleApplication
-%dir %{_includedir}/QtSolutions
-%{_includedir}/QtSolutions/QtLockedFile
-%{_includedir}/QtSolutions/qtlockedfile.h
-%{_qt4_datadir}/mkspecs/features/qtlockedfile.prf
+# XXX shared dir
+%dir %{_includedir}/qt4/QtSolutions
+%{_includedir}/qt4/QtSolutions/QtLockedFile
+%{_includedir}/qt4/QtSolutions/qtlockedfile.h
+%{qt4dir}/mkspecs/features/qtlockedfile.prf
 %endif
 
 %if %{with qt5}
@@ -169,5 +167,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_includedir}/qt5/QtSolutions
 %{_includedir}/qt5/QtSolutions/QtLockedFile
 %{_includedir}/qt5/QtSolutions/qtlockedfile.h
-%{_qt5_datadir}/mkspecs/features/qtlockedfile.prf
+%{qt5dir}/mkspecs/features/qtlockedfile.prf
 %endif
