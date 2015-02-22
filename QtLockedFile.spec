@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	qt4		# build Qt4
-%bcond_with	qt5		# build Qt5
+%bcond_without	qt5		# build Qt5
 
 # last commit to qtlockedfile subdir in
 # https://qt.gitorious.org/qt-solutions/qt-solutions/
@@ -21,12 +21,14 @@ Source1:	qtlockedfile.prf
 Patch0:		qtlockedfile-dont-build-example.patch
 Patch1:		qtlockedfile-use-current-version.patch
 URL:		http://doc.qt.digia.com/solutions/4/qtlockedfile/qtlockedfile.html
+BuildRequires:	libstdc++-devel
 %if %{with qt4}
 BuildRequires:	QtCore-devel
-BuildRequires:	libstdc++-devel
 BuildRequires:	qt4-qmake
 %endif
 %if %{with qt5}
+BuildRequires:	Qt5Core-devel
+BuildRequires:	qt5-qmake
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -51,6 +53,28 @@ Requires:	qt4-qmake
 This package contains libraries and header files for developing
 applications that use QtLockedFile.
 
+%package -n Qt5LockedFile
+Summary:	QFile extension with advisory locking functions
+Group:		Libraries
+
+%description -n Qt5LockedFile
+This class extends the QFile class with inter-process file locking
+capabilities. If an application requires that several processes should
+access the same file, QtLockedFile can be used to easily ensure that
+only one process at a time is writing to the file, and that no process
+is writing to it while others are reading it.
+
+%package -n Qt5LockedFile-devel
+Summary:	Development files for Qt5LockedFile library
+Group:		Development/Libraries
+Requires:	Qt5LockedFile = %{version}-%{release}
+Requires:	qt5-build
+Requires:	qt5-qmake
+
+%description -n Qt5LockedFile-devel
+This package contains libraries and header files for developing
+applications that use Qt5LockedFile.
+
 %prep
 %setup -qc
 %patch0 -p1
@@ -60,6 +84,8 @@ set -- *
 install -d build-qt{4,5}
 cp -al "$@" build-qt4
 cp -al "$@" build-qt5
+
+%{__sed} -i -e 's/QtSolutions/Qt5Solutions/' build-qt5/common.pri
 
 %build
 %if %{with qt4}
@@ -95,11 +121,10 @@ cd ..
 
 %if %{with qt5}
 cd build-qt5
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_qt5_datadir}/mkspecs/features}
+install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/qt5/QtSolutions,%{_qt5_datadir}/mkspecs/features}
 cp -a lib/* $RPM_BUILD_ROOT%{_libdir}
 rm $RPM_BUILD_ROOT%{_libdir}/lib*-%{version}.so.1.0
-install -d $RPM_BUILD_ROOT%{_includedir}/QtSolutions
-cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/QtSolutions
+cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/qt5/QtSolutions
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_qt5_datadir}/mkspecs/features
 cd ..
 %endif
@@ -130,19 +155,19 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with qt5}
-%files
+%files -n Qt5LockedFile
 %defattr(644,root,root,755)
 %doc README.TXT
-%attr(755,root,root) %{_libdir}/libQtSolutions_LockedFile-%{version}.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libQtSolutions_LockedFile-%{version}.so.1
+%attr(755,root,root) %{_libdir}/libQt5Solutions_LockedFile-%{version}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libQt5Solutions_LockedFile-%{version}.so.1
 
-%files devel
+%files -n Qt5LockedFile-devel
 %defattr(644,root,root,755)
 %doc doc example
-%{_libdir}/libQtSolutions_LockedFile-%{version}.so
-# XXX shared dir with QtSingleApplication
-%dir %{_includedir}/QtSolutions
-%{_includedir}/QtSolutions/QtLockedFile
-%{_includedir}/QtSolutions/qtlockedfile.h
+%{_libdir}/libQt5Solutions_LockedFile-%{version}.so
+# XXX shared dir
+%dir %{_includedir}/qt5/QtSolutions
+%{_includedir}/qt5/QtSolutions/QtLockedFile
+%{_includedir}/qt5/QtSolutions/qtlockedfile.h
 %{_qt5_datadir}/mkspecs/features/qtlockedfile.prf
 %endif
