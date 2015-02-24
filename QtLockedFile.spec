@@ -46,8 +46,6 @@ is writing to it while others are reading it.
 Summary:	Development files for QtLockedFile library
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	qt4-build
-Requires:	qt4-qmake
 
 %description devel
 This package contains libraries and header files for developing
@@ -68,8 +66,6 @@ is writing to it while others are reading it.
 Summary:	Development files for Qt5LockedFile library
 Group:		Development/Libraries
 Requires:	Qt5LockedFile = %{version}-%{release}
-Requires:	qt5-build
-Requires:	qt5-qmake
 
 %description -n Qt5LockedFile-devel
 This package contains libraries and header files for developing
