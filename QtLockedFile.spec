@@ -9,7 +9,7 @@
 Summary:	QFile extension with advisory locking functions
 Name:		QtLockedFile
 Version:	2.4
-Release:	2
+Release:	3
 License:	GPL v3 or LGPL v2 with exceptions
 Group:		Libraries
 # git clone git@gitorious.org:qt-solutions/qt-solutions.git
@@ -28,7 +28,7 @@ BuildRequires:	qt4-qmake
 %endif
 %if %{with qt5}
 BuildRequires:	Qt5Core-devel
-BuildRequires:	qt5-qmake
+BuildRequires:	qt5-qmake >= 5.4
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -80,8 +80,6 @@ set -- *
 install -d build-qt{4,5}
 cp -al "$@" build-qt4
 cp -al "$@" build-qt5
-
-%{__sed} -i -e 's/QtSolutions/Qt5Solutions/' build-qt5/common.pri
 
 %build
 %if %{with qt4}
