@@ -10,7 +10,7 @@ Summary:	QFile extension with advisory locking functions
 Summary(pl.UTF-8):	Rozszerzenie QFile z funkcjami do blokowania doradczego
 Name:		QtLockedFile
 Version:	2.4
-Release:	4
+Release:	5
 License:	GPL v3 or LGPL v2 with exceptions
 Group:		Libraries
 # git clone git@gitorious.org:qt-solutions/qt-solutions.git
@@ -154,7 +154,8 @@ cp -p %{SOURCE1} $RPM_BUILD_ROOT%{qt4dir}/mkspecs/features
 install -d $RPM_BUILD_ROOT{%{_includedir}/qt5/QtSolutions,%{qt5dir}/mkspecs/features}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*-%{version}.so.1.0
 cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/qt5/QtSolutions
-%{__sed} -e 's/-lQtSolutions/-lQt5Solutions/' %{SOURCE1} >$RPM_BUILD_ROOT%{qt5dir}/mkspecs/features/qtlockedfile.prf
+%{__sed} -e 's/-lQtSolutions/-lQt5Solutions/' \
+	 -e 's/QMAKE_INCDIR_QT/QT_MODULE_INCLUDE_BASE/' %{SOURCE1} >$RPM_BUILD_ROOT%{qt5dir}/mkspecs/features/qtlockedfile.prf
 %endif
 
 %clean
