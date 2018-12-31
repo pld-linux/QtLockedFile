@@ -1,0 +1,16 @@
+--- QtLockedFile-2.4/buildlib/buildlib.pro.orig	2015-02-22 20:04:08.000000000 +0100
++++ QtLockedFile-2.4/buildlib/buildlib.pro	2018-12-31 16:49:24.654850751 +0100
+@@ -5,9 +5,12 @@
+ include(../src/qtlockedfile.pri)
+ TARGET = $$QTLOCKEDFILE_LIBNAME
+ DESTDIR = $$QTLOCKEDFILE_LIBDIR
++isEmpty(INSTALL_LIBDIR) {
++  INSTALL_LIBDIR = $$QTLOCKEDFILE_LIBDIR
++}
+ win32 {
+     DLLDESTDIR = $$[QT_INSTALL_BINS]
+     QMAKE_DISTCLEAN += $$[QT_INSTALL_BINS]\\$${QTLOCKEDFILE_LIBNAME}.dll
+ }
+-target.path = $$DESTDIR
++target.path = $$INSTALL_LIBDIR
+ INSTALLS += target
