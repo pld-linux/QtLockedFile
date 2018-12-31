@@ -154,7 +154,7 @@ cp -p %{SOURCE1} $RPM_BUILD_ROOT%{qt4dir}/mkspecs/features
 install -d $RPM_BUILD_ROOT{%{_includedir}/qt5/QtSolutions,%{qt5dir}/mkspecs/features}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*-%{version}.so.1.0
 cp -p src/qtlockedfile.h src/QtLockedFile $RPM_BUILD_ROOT%{_includedir}/qt5/QtSolutions
-cp -p %{SOURCE1} $RPM_BUILD_ROOT%{qt5dir}/mkspecs/features
+%{__sed} -e 's/-lQtSolutions/-lQt5Solutions/' %{SOURCE1} >$RPM_BUILD_ROOT%{qt5dir}/mkspecs/features/qtlockedfile.prf
 %endif
 
 %clean
