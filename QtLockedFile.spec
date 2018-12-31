@@ -25,11 +25,11 @@ Patch2:		qtlockedfile-install.patch
 URL:		http://doc.qt.digia.com/solutions/4/qtlockedfile/qtlockedfile.html
 BuildRequires:	libstdc++-devel
 %if %{with qt4}
-BuildRequires:	QtCore-devel
-BuildRequires:	qt4-qmake
+BuildRequires:	QtCore-devel >= 4
+BuildRequires:	qt4-qmake >= 4
 %endif
 %if %{with qt5}
-BuildRequires:	Qt5Core-devel
+BuildRequires:	Qt5Core-devel >= 5.4
 BuildRequires:	qt5-qmake >= 5.4
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -56,6 +56,7 @@ Summary:	Development files for QtLockedFile library
 Summary(pl.UTF-8):	Pliki programistyczne biblioteki QtLockedFile
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	QtCore-devel >= 4
 
 %description devel
 This package contains header files for developing applications that
@@ -88,6 +89,7 @@ zapisuje, kiedy inne go czytają.
 Summary:	Development files for Qt5LockedFile library
 Summary(pl.UTF-8):	Pliki programistyczne biblioteki QtLockedFile
 Group:		Development/Libraries
+Requires:	Qt5Core-devel >= 5
 Requires:	Qt5LockedFile = %{version}-%{release}
 
 %description -n Qt5LockedFile-devel
